@@ -1,41 +1,30 @@
-library(lsa)
-source("~/tmp/topics-proj/scrape_html.R")
+'
+main code for blog summarization
+you may have to change the paths to .R files & embeds .txt
 
-url <- "http://www.york.ie"
+embeds can be downloaded from:
+http://nlp.stanford.edu/data/glove.6B.zip
+
+use the 50 dimension set
+glove.6B.50d.txt
+'
+
+source("~/tmp/topics-proj/scrape_html.R")
+source("~/tmp/topics-proj/pagerank.R")
+
+# ex: url <- "http://www.cp.fart/"
+url <- ""
 
 # build document matrix 
-doc_mat <- get_document_matrix_from_url(url)
+document <- get_document_from_url(url)
 
 ## get the adjacency matrix 
-get_document_adjacency <- function(doc_mat, thresh=0.9){
-    da <- cosine(doc_mat)
-    da[da>thresh]
-}
+mat <- get_document_adjacency(document$matrix, thresh=0.9)
 
-####### Final output will be of the form #######################################
-##                                                                            ##
-##         [1, 0, ..., 0, 1,                                                  ##
-##          0, 1, ..., 0, 1,                                                  ##
-##          .  .       .  .                                                   ## 
-##          .  .       .  .                                                   ##
-##          .  .       .  .                                                   ##
-##          1, 0, ..., 1, 0]                                                  ##
-##                                in {0,1}^(p x p)                            ##
-##                                                                            ##
-################################################################################
-
-################################################################################
-##                                                                            ##
-##             MAIN STUFF                                                     ##
-##                                                                            ##
-################################################################################
-
-
-
-## rank document with PR alg here
-
-# TODO: hook in angyalka's algorithm 
+## get the pagerank
+rank <- PageRank(mat)
 
 # then we recover the plaintext sentences by keeping a ledger of col_num <-> sentence 
+ledger <- document$ledger
 
 # TODO: write function to pretty print the top N sentences 

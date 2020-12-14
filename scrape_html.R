@@ -115,10 +115,10 @@ get_document_matrix <- function(sentence_dict){
     doc
 }
 
-get_document_matrix_from_url <- function(url){
+get_document_from_url <- function(url){
     
     para_list <- unlist(ContentScraper(Url = url, XpathPatterns=c("//p"), ManyPerPattern=TRUE))
     document <- build_document(para_list)
     
-    list(matrix=get_document_matrix(document), document=document)
+    list(matrix=get_document_matrix(document), ledger=document)
 }
