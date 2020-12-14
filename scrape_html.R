@@ -107,10 +107,10 @@ build_document <- function(para_list){
 
 get_document_matrix <- function(sentence_dict){
     p <- length(keys(sentence_dict))
-    doc <- matrix(0,p,50)
+    doc <- matrix(0,50,p)
     
     for (s in keys(sentence_dict)){
-        doc[as.numeric(s),] <- sentence_dict[[s]]$sentence_vector
+        doc[,as.numeric(s)] <- sentence_dict[[s]]$sentence_vector
     }
     diag(doc) <- 0
     doc
