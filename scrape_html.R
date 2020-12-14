@@ -112,6 +112,7 @@ get_document_matrix <- function(sentence_dict){
     for (s in keys(sentence_dict)){
         doc[as.numeric(s),] <- sentence_dict[[s]]$sentence_vector
     }
+    diag(doc) <- 0
     doc
 }
 
