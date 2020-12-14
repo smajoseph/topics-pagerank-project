@@ -1,39 +1,37 @@
 library(lsa)
 
-PageRank <- function(A, d = 0.85, iter){
-    
-    # remove self-loops 
-    diag(A) <- 0
-    
-    # find number of vertices p
+PageRank <- <- function(A, d = 0.85, iter){
+    A <- t(A)
     p <- nrow(A)
+    # sink has no outgoing links,
+    # replace with 
+    sinks <- which(colSums(A)==0)
+    fix.sinks <- rep(1, p)
+    for (i in sinks) {
+        A[,i] <- fix.sinks
+    }
+    # no self loops
+    diag(A) <- 0
+    deg <- colSums(A)
+    M <- sweep(A, 2, deg, FUN = '/')
+    M[is.na(M)] <- 0 # This is when we should correct for sinks
+    e <- c(rep(1,p))
     # create list of initial ranks
     # initial ranks are equal to 1/(p)
     prev.ranks <- c(rep(1/p, p))
     # empty list to hold updated rank 
     new.ranks <- c(rep(0,p))
+    # b is defined in the document
+    b <- ((1-d)/p)*e
     # Iterate until convergence
-    t = 0
-    while (t < iter) {
-        # iterate over all vertices U in the graph
-        for (U in 1:p) {
-            # get vertices V which U has incoming edges from
-            incoming <- which(A[,U] == 1)
-            # iterate over incoming vertices
-            for (V in incoming) {
-                # get number of outgoing edges from each vertex V
-                # in incoming and update ranks
-                outgoing <- length(which(A[V,] == 1))
-                update <- prev.ranks[V]/outgoing
-                # update
-                new.ranks[U] = new.ranks[U] + update
-            }
-            # include damping factor
-            new.ranks[U] <- ((1-d)/p) + d*new.ranks[U]
-        }
+    j = 0
+    while (j < iter) {
+        # w_j is defined in the document
+        w_j <- M%*%prev.ranks
+        new.ranks <- (d*w_j)+b
         prev.ranks <- new.ranks
         new.ranks <- c(rep(0,p))
-        t = t+1
+        j = j+1
     }
     return(prev.ranks)
 }
