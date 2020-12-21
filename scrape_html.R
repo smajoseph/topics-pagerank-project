@@ -10,7 +10,7 @@ library(Rcrawler)
 options(expressions = 5e5)
 
 ## in the terminal: $> pip3 install spacy;
-##                  $> python3 -m spacy download en_core-web_sm
+##                  $> python3 -m spacy download en_core_web_sm
 
 spacy_initialize(
     model="en_core_web_sm",

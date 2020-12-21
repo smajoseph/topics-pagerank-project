@@ -1,6 +1,6 @@
 library(lsa)
 
-PageRank <- <- function(A, d = 0.85, iter){
+PageRank <- function(A, d = 0.85, iter){
     A <- t(A)
     p <- nrow(A)
     # sink has no outgoing links,
@@ -38,5 +38,6 @@ PageRank <- <- function(A, d = 0.85, iter){
 
 get_document_adjacency <- function(doc_mat, thresh=0.9){
     da <- cosine(doc_mat)
+    diag(da) <- 0
     matrix(as.numeric(da>thresh), nrow=dim(da)[1])
 }
